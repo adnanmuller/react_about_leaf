@@ -3,15 +3,28 @@
 
 function Filters(props){
   var titles=window.LMDirectory.titles;
+
+  function updateName(evt){
+      props.updateFormState("currentName", evt.target.value);
+  }
+
+  function updateTitle(evt){
+    props.updateFormState("currentTitle", evt.target.value);
+  }
+
+  function updateIntern(evt){
+    props.updateFormState("isIntern", evt.target.checked);
+  }
+
   return(
     <form action="" id="directory-filters">
     <div className="group">
       <label htmlFor="txt-name">Name:</label>
-      <input type="text" name="name" value="" placeholder="Name of employee" id="txt-name" />
+      <input type="text" name="name" value={props.currentName} placeholder="Name of employee" id="txt-name" onChange={updateName}/>
     </div>
     <div className="group">
       <label htmlFor="sel-title">Job Title:</label>
-      <select name="sel-title" id="sel-title">
+      <select name="sel-title" id="sel-title" value={props.currentTitle} onChange={updateTitle}>
         <option value="">- Select -</option>
         {titles.map(function(title){
           return <option value={title.key} key={title.key}>{title.display}</option>
@@ -19,7 +32,7 @@ function Filters(props){
       </select>
     </div>
     <div className="group">
-      <label><input type="checkbox" value="1" /> Intern</label>
+      <label><input type="checkbox" value="1" checked={props.isIntern} onChange={updateIntern} /> Intern</label>
     </div>
     </form>
   )
@@ -56,11 +69,26 @@ class Directory extends React.Component{
   constructor(props){
    super(props);
 this.state={
-  people:window.LMDirectory.people
+  people:window.LMDirectory.people,
+  currentName:"",
+  currentTitle:"",
+  isIntern:false
+};
+
+this.updateFormState=this.updateFormState.bind(this);
+}
+
+updateFormState(name, val){
+  this.setState(
+    {
+      [name]:val
+    }
+  )
+
 }
 
 
-  }
+
 render(){
   return(
   <div className="company-directory">
@@ -69,7 +97,10 @@ render(){
   </h2>
   <p>Learn more about each person at Leaf & Mortar in this company directory.</p>
 
-  <Filters />
+  <Filters currentName={this.state.currentName}
+           currentTitle={this.state.currentTitle}
+           isIntern={this.state.isIntern}
+           updateFormState={this.updateFormState}  />
   <People people={this.state.people}/>
   </div>
 )
