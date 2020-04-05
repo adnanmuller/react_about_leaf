@@ -98,7 +98,7 @@
     updateFormState(name, val) {
       this.setState({
         [name]: val
-      });
+      }, this.updatePeopleList);
     }
 
     updatePeopleList() {
