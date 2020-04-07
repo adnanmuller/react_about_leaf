@@ -75,12 +75,15 @@
   function People(props) {
     return /*#__PURE__*/React.createElement("div", {
       className: "results"
-    }, props.people.map(function (person) {
-      return /*#__PURE__*/React.createElement(Person, {
+    }, /*#__PURE__*/React.createElement(ReactTransitionGroup.TransitionGroup, null, props.people.map(function (person) {
+      return /*#__PURE__*/React.createElement(ReactTransitionGroup.CSSTransition, {
         key: person.id,
+        classNames: "fade",
+        timeout: 1000
+      }, /*#__PURE__*/React.createElement(Person, {
         person: person
-      });
-    }));
+      }));
+    })));
   }
 
   class Directory extends React.Component {
